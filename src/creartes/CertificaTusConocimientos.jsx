@@ -6,7 +6,7 @@ const CertificaTusConocimientos = () => {
         <div className="container my-5">
             <div className="row">
                 <div className="col-md-5 offset-1">
-                    <h2 className="titulo fw-bold">Taller de Fotoproducto para emprendedores</h2>
+                    <h2 className="titulo fw-bold">Suma experiencia</h2>
                     <p className="fs-3">{contenido}</p>
                 </div>
                 <div className="col-md-5 text-end">

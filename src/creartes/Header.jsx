@@ -5,7 +5,7 @@ const Header = () => {
     let contenidoTexto = "Aprende a tomar imagenes de tus productos como un profesional.";
 
     return (
-        <div className="container-fluid backgroundHeader">
+        <div className="container-fluid backgroundHeader" style={{ marginTop: '80px' }}>
             <div className="container">
                 <div className="row">
                     <div className="col my-5">
