@@ -7,33 +7,22 @@ function Logo({ imgSrc, title }) {
   const menuItems = [
     { label: 'Inicio', href: '#home' },
     { label: 'Nosotras', href: '#nosotras' },
-    {
-      label: 'Portfolio',
-      href: 'https://drive.google.com/drive/folders/13EVxj70O79F2bVDAR8cXzi-J0E8l3LFt',
-      external: true
-    }
+    { label: 'Portfolio', href: '#portfolio' },
   ];
 
-  // Para controlar scroll y mostrar/ocultar barra
+  // Mostrar/ocultar navbar según scroll
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
-
     const handleScroll = () => {
       const currentScrollY = window.pageYOffset;
-
-      if (currentScrollY < 0) return;
-
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setShowNavbar(false);
       } else {
         setShowNavbar(true);
       }
-
       lastScrollY = currentScrollY;
     };
-
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -41,19 +30,24 @@ function Logo({ imgSrc, title }) {
     if (isMenuOpen) setIsMenuOpen(false);
   };
 
+  // Scroll suave al hacer click
   const handleItemClick = (item, e) => {
-    if (item.label === 'Inicio') {
-      e.preventDefault();
+    e.preventDefault();
+
+    if (item.href === '#home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
+    } else {
+      const section = document.querySelector(item.href);
+      section?.scrollIntoView({ behavior: 'smooth' });
     }
 
-    if (item.external) {
-      // Permitir el comportamiento por defecto (ya que tiene target="_blank")
-      // O si prefieres: window.open(item.href, '_blank');
-      return;
-    }
+    handleNavClick();
+  };
 
+  // Hacer que el logo también navegue al Portfolio
+  const handleLogoClick = () => {
+    const section = document.querySelector('#portfolio');
+    section?.scrollIntoView({ behavior: 'smooth' });
     handleNavClick();
   };
 
@@ -61,7 +55,10 @@ function Logo({ imgSrc, title }) {
     <header className={`header-navigation ${showNavbar ? 'visible' : 'hidden'}`}>
       <div className="nav-container">
         {/* Logo Section */}
-        <div className="logo-section">
+        <div
+          className="logo-section cursor-pointer"
+          onClick={handleLogoClick}
+        >
           {imgSrc && <img src={imgSrc} alt={title} className="logo-img" />}
           <h1 className="logo-text">{title}</h1>
         </div>
@@ -86,8 +83,6 @@ function Logo({ imgSrc, title }) {
                   href={item.href}
                   className="nav-link"
                   onClick={(e) => handleItemClick(item, e)}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
                 >
                   {item.label}
                 </a>

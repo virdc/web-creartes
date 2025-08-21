@@ -6,6 +6,7 @@ import Logo from "./creartes/Logo";
 import PlataformaCreartes from "./creartes/PlataformaCreartes";
 import Nosotras from "./creartes/Nosotras";
 import Footer from "./creartes/Footer";
+import Portfolio from './creartes/Portfolio'
 
 // Menú actualizado con scroll suave
 const menuItems = [
@@ -54,6 +55,7 @@ function App() {
         <GarantiaDeAprendizaje />
         <PlataformaCreartes />
         <Nosotras />
+        <Portfolio />
       </main>
       <Footer />
     </>

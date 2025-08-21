@@ -439,40 +439,41 @@ body {
   100% { transform: translateX(-30px) rotate(-2deg); }
 }
 
-/* ========== EFECTOS LATERALES DERECHOS MEJORADOS ========== */
-.backgroundHeader {
-  position: relative;
-  overflow: hidden;
-}
-
-.animaciones-header {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* ====== LÍNEAS ANIMADAS ====== */
-.backgroundHeader .camara-flotante {
-  background-image: url('/images/camarita_.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  bottom: 0;
-  right: calc(20px + (var(--i) - 1) * 60px);
-  opacity: 0.8;
-  animation: flotarCamara calc(5s + var(--i)) linear infinite;
-  transform: scale(calc(0.5 + var(--i)*0.1));
-  z-index: 2; /* siempre atrás de las líneas */
-}
-
-
-
+/* ========== EFECTOS LATERALES MEJORADOS ========== */
 
 /* ====== CONTENEDOR PRINCIPAL ====== */
 .backgroundHeader {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--verde-primario) 0%, #8fa963 50%, var(--verde-primario) 100%);
+  background: linear-gradient(135deg, 
+    var(--verde-primario) 0%, 
+    #8fa963 30%, 
+    #7a9b4d 50%,
+    #8fa963 70%, 
+    var(--verde-primario) 100%
+  );
+  background-size: 300% 300%;
+  animation: fondoVibrante 15s ease-in-out infinite;
+}
+
+/* Animación de fondo más dinámica */
+@keyframes fondoVibrante {
+  0%, 100% { 
+    background-position: 0% 50%; 
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  25% { 
+    background-position: 100% 0%; 
+    filter: hue-rotate(5deg) brightness(1.05);
+  }
+  50% { 
+    background-position: 100% 100%; 
+    filter: hue-rotate(10deg) brightness(1.1);
+  }
+  75% { 
+    background-position: 0% 100%; 
+    filter: hue-rotate(5deg) brightness(1.05);
+  }
 }
 
 /* ====== CONTENEDOR DE ANIMACIONES ====== */
@@ -480,74 +481,315 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 1; /* cámaras y rayos detrás del contenido principal */
+  z-index: 1;
 }
 
-/* ====== RAYOS LUZ ====== */
+/* Efecto de partículas ambientales */
+.animaciones-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 100px 100px, 150px 150px, 80px 80px;
+  animation: particulasAmbiente 20s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes particulasAmbiente {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-100px) translateX(50px); }
+}
+
+/* ====== RAYOS DE LUZ MEJORADOS ====== */
 .rayo-luz {
   position: absolute;
   bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, var(--amarillo-primario), var(--rosa-accent));
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    var(--amarillo-primario) 20%,
+    var(--rosa-accent) 60%,
+    rgba(255,255,255,0.8) 80%,
+    transparent 100%
+  );
   border-radius: 2px;
-  opacity: 0.7;
-  animation: subirRayo 2s linear infinite;
-  z-index: 3; /* siempre delante de las cámaras */
+  opacity: 0;
+  animation: rayoMejorado 3s ease-out infinite;
+  z-index: 3;
+  box-shadow: 
+    0 0 10px var(--amarillo-primario),
+    0 0 20px var(--rosa-accent);
+  filter: blur(0.5px);
 }
 
-@keyframes subirRayo {
-  0% { transform: translateY(100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-120%); opacity: 0; }
+/* Variaciones de timing para los rayos */
+.rayo-luz:nth-child(2n) {
+  animation-duration: 2.5s;
+  animation-delay: -0.5s;
+  width: 2px;
 }
 
-/* ====== CAMARAS FLOTANTES ====== */
+.rayo-luz:nth-child(3n) {
+  animation-duration: 3.5s;
+  animation-delay: -1s;
+  width: 4px;
+  filter: blur(1px);
+}
+
+.rayo-luz:nth-child(4n) {
+  animation-duration: 2.8s;
+  animation-delay: -1.5s;
+  opacity: 0.5;
+}
+
+@keyframes rayoMejorado {
+  0% { 
+    height: 0;
+    opacity: 0;
+    transform: translateY(100%) scaleY(0);
+  }
+  15% { 
+    height: 30%;
+    opacity: 0.8;
+    transform: translateY(70%) scaleY(0.3);
+  }
+  40% { 
+    height: 80%;
+    opacity: 1;
+    transform: translateY(20%) scaleY(0.8);
+  }
+  70% { 
+    height: 120%;
+    opacity: 0.9;
+    transform: translateY(-20%) scaleY(1.2);
+  }
+  90% { 
+    height: 140%;
+    opacity: 0.3;
+    transform: translateY(-40%) scaleY(1.4);
+  }
+  100% { 
+    height: 150%;
+    opacity: 0;
+    transform: translateY(-50%) scaleY(1.5);
+  }
+}
+
+/* ====== CÁMARAS FLOTANTES MEJORADAS ====== */
 .camara-flotante {
   position: absolute;
-  width: calc(20px + var(--i) * 5px);
-  height: calc(20px + var(--i) * 5px);
-  background-image: url('/images/camarita.png'); /* tu PNG transparente */
+  width: calc(18px + var(--i, 1) * 4px);
+  height: calc(18px + var(--i, 1) * 4px);
+  background-image: url('/images/camarita.png');
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: transparent; /* opcional, asegura transparencia */
+  background-color: transparent;
   bottom: 0;
-  opacity: 0.6;
-  animation: flotarCamara 6s linear infinite;
-  transform: scale(calc(0.5 + var(--i)*0.1));
+  right: calc(20px + (var(--i, 1) - 1) * 60px);
+  opacity: 0;
+  animation: flotarCamaraPro calc(6s + var(--i, 1) * 0.5s) ease-in-out infinite;
+  transform: scale(calc(0.6 + var(--i, 1) * 0.08));
   z-index: 2;
+  filter: 
+    drop-shadow(2px 2px 8px rgba(0,0,0,0.3))
+    brightness(1.1)
+    contrast(1.05);
+  will-change: transform, opacity;
 }
 
+/* Cámaras específicas con diferentes efectos */
+.backgroundHeader .camara-flotante {
+  background-image: url('/images/camarita_.png');
+  filter: 
+    drop-shadow(2px 2px 12px rgba(0,0,0,0.4))
+    brightness(1.15)
+    saturate(1.1);
+}
 
-/* ====== ANIMACIÓN DE FLOTADO ====== */
+/* Variaciones para crear más naturalidad */
+.camara-flotante:nth-child(odd) {
+  animation-direction: reverse;
+  animation-delay: calc(-1s * var(--i, 1));
+}
 
-@keyframes flotarCamara {
+.camara-flotante:nth-child(3n) {
+  animation-duration: calc(7s + var(--i, 1) * 0.3s);
+  transform: scale(calc(0.7 + var(--i, 1) * 0.06));
+}
+
+/* ====== ANIMACIÓN MEJORADA DE CÁMARAS ====== */
+@keyframes flotarCamaraPro {
   0% {
-    transform: translate(0, 100%) rotate(0deg);
+    transform: translate(0, 100%) rotate(0deg) scale(calc(0.6 + var(--i, 1) * 0.08));
     opacity: 0;
   }
-  15% {
-    opacity: 1;
+  10% {
+    opacity: 0.7;
+    transform: translate(0, 85%) rotate(2deg) scale(calc(0.65 + var(--i, 1) * 0.08));
+  }
+  25% {
+    opacity: 0.9;
+    transform: translate(calc(-6px * var(--i, 1)), 60%) rotate(8deg) scale(calc(0.8 + var(--i, 1) * 0.08));
   }
   40% {
-    transform: translate(calc(-8px * var(--i)), -40%) rotate(10deg);
-    opacity: 0.85;
+    opacity: 1;
+    transform: translate(calc(10px * var(--i, 1)), 35%) rotate(-10deg) scale(calc(0.9 + var(--i, 1) * 0.08));
   }
-  60% {
-    transform: translate(calc(6px * var(--i)), -65%) rotate(-12deg);
-    opacity: 0.9;
+  55% {
+    opacity: 0.95;
+    transform: translate(calc(-8px * var(--i, 1)), 15%) rotate(12deg) scale(calc(0.95 + var(--i, 1) * 0.08));
   }
-  80% {
-    transform: translate(calc(-10px * var(--i)), -90%) rotate(6deg);
-    opacity: 0.7;
+  70% {
+    opacity: 0.8;
+    transform: translate(calc(5px * var(--i, 1)), -5%) rotate(-8deg) scale(calc(0.9 + var(--i, 1) * 0.08));
+  }
+  85% {
+    opacity: 0.5;
+    transform: translate(calc(-3px * var(--i, 1)), -25%) rotate(4deg) scale(calc(0.8 + var(--i, 1) * 0.08));
+  }
+  95% {
+    opacity: 0.2;
+    transform: translate(calc(2px * var(--i, 1)), -40%) rotate(-2deg) scale(calc(0.7 + var(--i, 1) * 0.08));
   }
   100% {
-    transform: translate(calc(0px * var(--i)), -120%) rotate(0deg);
+    transform: translate(0, -50%) rotate(0deg) scale(calc(0.5 + var(--i, 1) * 0.08));
     opacity: 0;
   }
 }
 
-/* Opcional: añadir timing-function para suavizar */
-.animacion-camara {
-  animation: flotarCamara 8s ease-in-out infinite;
+/* ====== EFECTOS ADICIONALES DE PROFUNDIDAD ====== */
+
+/* Efecto de neblina sutil */
+.animaciones-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.05) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255,255,255,0.03) 100%
+  );
+  animation: neblinaMovimiento 10s ease-in-out infinite alternate;
+  z-index: 4;
 }
 
+@keyframes neblinaMovimiento {
+  0% { 
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  100% { 
+    opacity: 0.6;
+    transform: translateY(-10px);
+  }
+}
+
+/* ====== JERARQUÍA DE PROFUNDIDAD ====== */
+.camara-flotante[style*="--i:1"],
+.camara-flotante:nth-child(1) {
+  z-index: 2;
+  filter: 
+    drop-shadow(3px 3px 15px rgba(0,0,0,0.4))
+    brightness(1.2)
+    saturate(1.15);
+}
+
+.camara-flotante[style*="--i:2"],
+.camara-flotante:nth-child(2) {
+  z-index: 2;
+  filter: 
+    drop-shadow(2px 2px 12px rgba(0,0,0,0.35))
+    brightness(1.15)
+    saturate(1.1);
+}
+
+.camara-flotante[style*="--i:3"],
+.camara-flotante:nth-child(3) {
+  z-index: 2;
+  filter: 
+    drop-shadow(2px 2px 10px rgba(0,0,0,0.3))
+    brightness(1.1)
+    saturate(1.05);
+}
+
+/* ====== OPTIMIZACIONES DE RENDIMIENTO ====== */
+.backgroundHeader,
+.animaciones-header,
+.camara-flotante,
+.rayo-luz {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ====== RESPONSIVE DESIGN ====== */
+@media (max-width: 1024px) {
+  .camara-flotante {
+    width: calc(16px + var(--i, 1) * 3px);
+    height: calc(16px + var(--i, 1) * 3px);
+  }
+  
+  .rayo-luz {
+    width: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .backgroundHeader {
+    animation-duration: 20s; /* Más lento en móviles */
+  }
+  
+  .camara-flotante {
+    width: calc(14px + var(--i, 1) * 2px);
+    height: calc(14px + var(--i, 1) * 2px);
+    right: calc(15px + (var(--i, 1) - 1) * 40px);
+  }
+  
+  .rayo-luz:nth-child(n+4) {
+    display: none; /* Menos rayos en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  .animaciones-header::before,
+  .animaciones-header::after {
+    opacity: 0.3; /* Reducir efectos ambientales */
+  }
+  
+  .backgroundHeader {
+    animation: none; /* Sin animación de fondo en móviles pequeños */
+  }
+}
+
+/* ====== MODO REDUCIDO DE MOVIMIENTO ====== */
+@media (prefers-reduced-motion: reduce) {
+  .backgroundHeader,
+  .animaciones-header::before,
+  .animaciones-header::after {
+    animation: none;
+  }
+  
+  .camara-flotante {
+    animation: flotarCamaraReducida 4s ease-in-out infinite;
+  }
+  
+  .rayo-luz {
+    animation: rayoReducido 2s ease-in-out infinite;
+  }
+}
+
+@keyframes flotarCamaraReducida {
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-20px); }
+}
+
+@keyframes rayoReducido {
+  0%, 100% { opacity: 0; height: 0; }
+  50% { opacity: 0.7; height: 50%; }
+}
